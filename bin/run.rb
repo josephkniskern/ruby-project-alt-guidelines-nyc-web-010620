@@ -1,9 +1,16 @@
 require_relative '../config/environment'
 require 'tty-prompt'
 
+prompt = TTY::Prompt.new
+name = prompt.ask("What is your name?")
 
+Buyer.all.each do |buyer|
+    puts buyer.name
+end
+# Buyer.create(name: name)
+# prompt.select("What would you like to do?", %w(All_listings My_listings))
 
-
+binding.pry
 
 
 
