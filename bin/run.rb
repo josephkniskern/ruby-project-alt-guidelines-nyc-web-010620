@@ -29,7 +29,7 @@ def run
                 if new_user.listings == []
                     prompt.say("Sorry, you have no listings!")
                 else
-                    puts user_listings = new_user.listings.map { |listing| "#{listing.id} | #{listing.description} | #{listing.price}"}
+                    user_listings = new_user.favorites.map { |favorite| "#{favorite.listing.id} | #{favorite.listing.description} | #{favorite.listing.price} | #{favorite.comment}"}
                     buyer_input = ttyprompt( "What would you like to do? ", user_listings)
                     delete_listing = ttyprompt("Would you like to delete this listing?", ["Yes", "No"])
                     if delete_listing == "Yes"
@@ -39,7 +39,14 @@ def run
                     elsif delete_listing == "No"
                         comment_listing = ttyprompt("Would you like to add a comment to your listing?", ["Yes", "No"])
                         if comment_listing == "Yes"
-                            puts Favorite.find_by(buyer_id: new_user.id, listing_id: buyer_input.split("|")[0] )
+                            selected_listing = Favorite.find_by(buyer_id: new_user.id, listing_id: buyer_input.split("|")[0] )
+                            user_input = gets.strip
+                            selected_listing.comment = user_input
+                            selected_listing.save
+                            # selected_listing.update(buyer_id: new_user.id, listing_id: buyer_input.split("|")[0], comment: user_input)
+                            new_user = Buyer.find(new_user.id)
+
+                            #binding.pry
                         elsif comment_listing == "No"
                             buyer_input
                         end
@@ -48,6 +55,7 @@ def run
                     end
                 end
             when "Exit"
+                puts "Goodbye!"
             break
         end
     end
