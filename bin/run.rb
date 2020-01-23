@@ -55,7 +55,9 @@ def run
                 listing = ttyprompt("Here are the listings!", all_listings) 
                 prompt.yes?("Would you like to save this listing as your favorite?")
                 # Favorite.create(buyer_id:  new_user.id, listing_id: listing.split("|")[0])
+                
                 new_user.listings << Listing.find(listing.split("|")[0])
+
 
                 # Favorite.create(user_id: user.id, listing_id: listing.id)
                 #binding.pry
@@ -64,17 +66,24 @@ def run
                     prompt.say("Sorry, you have no listings!")
                 else
                     puts user_listings = new_user.listings.map { |listing| "#{listing.id} | #{listing.description} | #{listing.price}"}
+                    # binding.pry
                     buyer_input = ttyprompt( "What would you like to do? ", user_listings)
                     delete_listing = ttyprompt("Would you like to delete this listing?", ["Yes", "No"])
                     if delete_listing == "Yes"
+                        #binding.pry
                         #delete_by_id=new_user.listings.find(listing.split("|")[0])
                         #delete_by_id.destroy
                         # Delete a Favorite
                         # How do we find the right favorite to delete?
 
                         # Look through the all favorites and find the favorite that has the listing_id equal to the id what was selected
-                        Favorite.find_by(buyer_id: new_user.id, listing_id: )
-                        binding.pry
+                        Favorite.find_by(buyer_id: new_user.id, listing_id: buyer_input.split("|")[0] ).delete
+
+                        new_user = Buyer.find(new_user.id)
+                        puts "No listings"
+                        #destroy_fave = 
+                        #Favorite.destroy(destroy_fave.id)
+                        # destroy_fave.destroy(buyer_id: new_user.id, listing_id: buyer_input.split("|")[0])
                     elsif delete_listing == "No"
                         buyer_input
                     else
