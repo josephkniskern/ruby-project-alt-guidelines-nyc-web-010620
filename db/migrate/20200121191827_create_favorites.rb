@@ -4,7 +4,7 @@ class CreateFavorites < ActiveRecord::Migration[5.2]
       t.integer :buyer_id
       t.integer :listing_id
       # ADD COMMENT COl
-
+ 
       t.timestamp
     end
   end
