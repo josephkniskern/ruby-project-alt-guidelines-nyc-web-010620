@@ -63,11 +63,18 @@ def run
                 if new_user.listings == []
                     prompt.say("Sorry, you have no listings!")
                 else
-                    puts user_listings=new_user.listings.map { |listing| "#{listing.id} | #{listing.description} | #{listing.price}"}
+                    puts user_listings = new_user.listings.map { |listing| "#{listing.id} | #{listing.description} | #{listing.price}"}
                     buyer_input = ttyprompt( "What would you like to do? ", user_listings)
                     delete_listing = ttyprompt("Would you like to delete this listing?", ["Yes", "No"])
                     if delete_listing == "Yes"
-                        user_listings.destroy_all
+                        #delete_by_id=new_user.listings.find(listing.split("|")[0])
+                        #delete_by_id.destroy
+                        # Delete a Favorite
+                        # How do we find the right favorite to delete?
+
+                        # Look through the all favorites and find the favorite that has the listing_id equal to the id what was selected
+                        Favorite.find_by(buyer_id: new_user.id, listing_id: )
+                        binding.pry
                     elsif delete_listing == "No"
                         buyer_input
                     else
