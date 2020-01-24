@@ -1,5 +1,6 @@
 require_relative '../config/environment'
 require 'tty-prompt'
+
 prompt = TTY::Prompt.new
 
 def ttyprompt(text,arr)
@@ -7,6 +8,45 @@ def ttyprompt(text,arr)
     prompt.select(text,arr)
 end
 
+
+
+
+puts " 
++-+-+-+-+ +-+-+-+-+ +-+-+-+-+-+-+-+-+
+|F|i|n|d| |y|o|u|r| |h|o|u|s|e|!|!|!|
++-+-+-+-+ +-+-+-+-+ +-+-+-+-+-+-+-+-+
+
+         (
+ 
+           )
+         ( _   _._
+          |_|-'_~_`-._
+       _.-'-_~_-~_-~-_`-._
+   _.-'_~-_~-_-~-_~_~-_~-_`-._
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    |  []  []   []   []  [] |
+    |           __    ___   |   
+  ._|  []  []  | .|  [___]  |_._._._._._._._._._._._._._._._._.  
+  |=|________()|__|()_______|=|=|=|=|=|=|=|=|=|=|=|=|=|=|=|=|=| 
+^^^^^^^^^^^^^^^ === ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^  
+    _______      ===   
+   <_4sale_>       === 
+      ^|^             ===
+       |        
+"
+def see_comments
+    #all_listings = Listing.all.map { |listing| "#{listing.id} | #{listing.description} | #{listing.price}"} 
+    Listing.all.each { |listing| 
+        #puts listing.description
+        listing.favorites.each { |favorite| 
+            puts favorite.comment
+        }
+    }
+    # puts all_listings  
+    # binding.pry
+end
+
+# see_comments
 def run
     prompt = TTY::Prompt.new
 
@@ -32,6 +72,7 @@ def run
                     user_listings = new_user.favorites.map { |favorite| "#{favorite.listing.id} | #{favorite.listing.description} | #{favorite.listing.price} | #{favorite.comment}"}
                     buyer_input = ttyprompt( "What would you like to do? ", user_listings)
                     delete_listing = ttyprompt("Would you like to delete this listing?", ["Yes", "No"])
+                    #comment_listing = ttyprompt("Would you like to add a comment to your listing?", ["Yes", "No"])
                     if delete_listing == "Yes"
                         Favorite.find_by(buyer_id: new_user.id, listing_id: buyer_input.split("|")[0] ).delete
                         new_user = Buyer.find(new_user.id)
@@ -43,15 +84,13 @@ def run
                             user_input = gets.strip
                             selected_listing.comment = user_input
                             selected_listing.save
-                            # selected_listing.update(buyer_id: new_user.id, listing_id: buyer_input.split("|")[0], comment: user_input)
+                            selected_listing.update(buyer_id: new_user.id, listing_id: buyer_input.split("|")[0], comment: user_input)
                             new_user = Buyer.find(new_user.id)
 
                             #binding.pry
                         elsif comment_listing == "No"
                             buyer_input
                         end
-                    else
-                        "Exit"
                     end
                 end
             when "Exit"
@@ -60,7 +99,6 @@ def run
         end
     end
 end
-
 
 
 run
